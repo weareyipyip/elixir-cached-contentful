@@ -1,5 +1,9 @@
 # Cached Contentful!
 
+### Dependencies used
+
+* [Contentful Delivery SDK](https://github.com/contentful-labs/contentful.ex)
+
 ### Installation
 
 Add cached_contentful to your dependency list
