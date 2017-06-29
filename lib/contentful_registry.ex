@@ -13,7 +13,7 @@ defmodule CachedContentful.ContentfulRegistry do
 	end
 
 	def init(:ok) do
-		if @auto_update do schedule_work() end
+		if @auto_update, do: schedule_work()
 		entryData = RequestHandler.get_all_entries()
 		{:ok, entryData}
 	end

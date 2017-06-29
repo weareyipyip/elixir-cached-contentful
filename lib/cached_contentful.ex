@@ -3,7 +3,7 @@ defmodule CachedContentful do
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
-  def start do
+  def start(_, _) do
     import Supervisor.Spec, warn: false
 
     # Define workers and child supervisors to be supervised
