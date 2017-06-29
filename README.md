@@ -1,4 +1,4 @@
-# Cached Contentful!
+# Elixir Cached Contentful!
 
 ### Dependencies used
 
