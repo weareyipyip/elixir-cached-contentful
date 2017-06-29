@@ -43,7 +43,7 @@ defmodule CachedContentful.ContentfulRegistry do
 		# Contentful gives its error in the request, so need to find another wat to handle it
 		case entryData do
 			entries -> 
-				{:reply, entries, {:ok, entries}}
+				{:reply, entries, entries}
 			# {:error, nil} -> 
 			# 	{:reply, %{}, {:error, nil}}
 		end
