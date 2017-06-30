@@ -10,7 +10,8 @@ defmodule CachedContentful do
     children = [
       # Starts a worker by calling: ExMedium.Worker.start_link(arg1, arg2, arg3)
       # worker(ExMedium.Worker, [arg1, arg2, arg3]),
-      worker(CachedContentful.ContentfulRegistry, [CachedContentful.ContentfulRegistry]),
+      worker(CachedContentful.EntryRegistry, [CachedContentful.EntryRegistry]),
+      worker(CachedContentful.AssetRegistry, [CachedContentful.AssetRegistry]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

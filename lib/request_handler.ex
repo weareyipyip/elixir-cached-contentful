@@ -13,4 +13,13 @@ defmodule CachedContentful.RequestHandler do
 		end
 	end
 
+	def get_all_assets() do
+		url = "#{@base_url}/spaces/#{@space_id}/assets?access_token=#{@access_token}"
+		case HTTPoison.get!(url) do
+			%HTTPoison.Response{status_code: 200, body: body} ->
+				items = body |> Poison.decode!
+				items["items"]
+		end
+	end
+
 end

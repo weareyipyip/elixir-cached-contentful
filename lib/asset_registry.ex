@@ -1,4 +1,4 @@
-defmodule CachedContentful.ContentfulRegistry do 
+defmodule CachedContentful.AssetRegistry do 
 	use GenServer
 	require Logger
 
@@ -14,7 +14,7 @@ defmodule CachedContentful.ContentfulRegistry do
 
 	def init(:ok) do
 		if @auto_update, do: schedule_work()
-		entryData = RequestHandler.get_all_entries()
+		entryData = RequestHandler.get_all_assets()
 		{:ok, entryData}
 	end
 
@@ -24,26 +24,25 @@ defmodule CachedContentful.ContentfulRegistry do
 	end
 
 	def handle_info(:work, state) do 
-    	entries = RequestHandler.get_all_entries()
-		GenServer.cast(__MODULE__, {:updateEntries, entries})
+    	assets = RequestHandler.get_all_assets()
+		GenServer.cast(__MODULE__, {:updateAssets, assets})
     	schedule_work()
 	    {:noreply, state}
 	 end
 
 	# Getters
-	def handle_call(:getEntries, _from, entryData) do
-		# Contentful gives its error in the request, so need to find another wat to handle it
-		case entryData do
-			entries -> 
-				{:reply, entries, entries}
+	def handle_call(:getAssets, _from, assetData) do
+		case assetData do
+			assets -> 
+				{:reply, assets, assets}
 			# {:error, nil} -> 
 			# 	{:reply, %{}, {:error, nil}}
 		end
 	end
 
 	# Updates
-	def handle_cast({:updateEntries, entries}, _entryData) do
-		{:noreply, entries}
+	def handle_cast({:updateAssets, assets}, _assetData) do
+		{:noreply, assets}
 	end
 
 end

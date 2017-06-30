@@ -2,15 +2,13 @@ defmodule CachedContentful.Api do
 
 	alias CachedContentful.RequestHandler
 
-	@module CachedContentful.ContentfulRegistry
-
-	# GETTERS
+	# ENTRIES
 	def getEntries do
-		GenServer.call(@module, :getEntries)
+		GenServer.call(CachedContentful.EntryRegistry, :getEntries)
 	end
 
 	def getEntriesByType(type) do
-		entries = GenServer.call(@module, :getEntries)
+		GenServer.call(CachedContentful.EntryRegistry, :getEntries)
 			|> Enum.map(fn(entry) ->
 			if entry["sys"]["contentType"]["sys"]["id"] == type do
 				entry
@@ -20,7 +18,7 @@ defmodule CachedContentful.Api do
 	end
 
 	def getEntryById(id) do
-		entries = GenServer.call(@module, :getEntries)
+		GenServer.call(CachedContentful.EntryRegistry, :getEntries)
 			|> Enum.map(fn(entry) ->
 			if entry["sys"]["id"] == id do
 				entry
@@ -30,10 +28,33 @@ defmodule CachedContentful.Api do
 			|> List.first
 	end
 
+	# ASSETS
+	def getAssets do
+		GenServer.call(CachedContentful.AssetRegistry, :getAssets)
+	end
+
+	def getAssetById(id) do
+		GenServer.call(CachedContentful.AssetRegistry, :getAssets)
+			|> Enum.map(fn(asset) ->
+			if asset["sys"]["id"] == id do
+				asset
+			end
+		end)
+			|> Enum.filter(fn(asset) -> asset != nil end)
+			|> List.first
+	end
+
+
+
 	# UPDATERS
 	def updateEntries do
 		entries = RequestHandler.get_all_entries()
-		GenServer.cast(@module, {:updateEntries, entries})
+		GenServer.cast(CachedContentful.EntryRegistry, {:updateEntries, entries})
+	end
+
+	def updateAssets do
+		assets = RequestHandler.get_all_assets()
+		GenServer.cast(CachedContentful.AssetRegistry, {:updateAssets, assets})
 	end
 
 end
