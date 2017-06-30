@@ -1,8 +1,10 @@
 # Elixir Cached Contentful!
 
 A simple way to fetch data from Contentful and cache them to avoid over 9000 API requests!!
+
 There are only basic functionalities for entries and assets. More features coming soon, so enjoy this for now.
-If you want to contribute, do a pull request with an argument why it should be merged and we will determine if it's awesome enouh.
+
+If you want to contribute, do a pull request with an argument why it should be merged and we will determine if it's awesome enough.
 
 Cheers and enjoy!
 
