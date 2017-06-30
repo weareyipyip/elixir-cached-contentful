@@ -4,8 +4,8 @@ defmodule CachedContentful.ContentfulRegistry do
 
 	alias CachedContentful.RequestHandler
 
-	@auto_update Application.get_env(:cached_contentful, :auto_update)
-	@update_interval Application.get_env(:cached_contentful, :update_interval)
+	@auto_update Application.get_env(:cached_contentful, :auto_update, false)
+	@update_interval Application.get_env(:cached_contentful, :update_interval, 1 * 60 * 60 * 10000)
 
 
 	def start_link(name) do
@@ -20,25 +20,17 @@ defmodule CachedContentful.ContentfulRegistry do
 
 	# Auto updater
 	defp schedule_work do
-		update_interval = if @update_interval do
-			@update_interval
-		else
-			1 * 60 * 60 * 1000
-		end
-		Process.send_after(self(), :work, update_interval)
+		Process.send_after(self(), :work, @update_interval)
 	end
 
-	def handle_info(:work, state) do
-    	updateEntries()
+	def handle_info(:work, state) do 
+    	entries = RequestHandler.get_all_entries()
+		GenServer.cast(__MODULE__, {:updateEntries, entries})
     	schedule_work()
 	    {:noreply, state}
 	 end
 
-	# Get saved entries
-	def getEntries() do
-		GenServer.call(__MODULE__, :getEntries)
-	end
-
+	# Getters
 	def handle_call(:getEntries, _from, entryData) do
 		# Contentful gives its error in the request, so need to find another wat to handle it
 		case entryData do
@@ -49,12 +41,7 @@ defmodule CachedContentful.ContentfulRegistry do
 		end
 	end
 
-	# Update entries
-	def updateEntries() do
-		entries = RequestHandler.get_all_entries()
-		GenServer.cast(__MODULE__, {:updateEntries, entries})
-	end
-
+	# Updates
 	def handle_cast({:updateEntries, entries}, _entryData) do
 		{:noreply, entries}
 	end

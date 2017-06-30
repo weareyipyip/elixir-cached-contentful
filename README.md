@@ -2,13 +2,13 @@
 
 ### Dependencies used
 
-* [Contentful Delivery SDK](https://github.com/contentful-labs/contentful.ex)
+* [Httpoison](https://github.com/edgurgel/httpoison)
 
 ### Installation
 
 Add cached_contentful to your dependency list
 ``` Elixir
-{:cached_contentful, git: "https://github.com/weareyipyip/elixir-cached-contentful.git",  tag: "0.1.3"}
+{:cached_contentful, git: "https://github.com/weareyipyip/elixir-cached-contentful.git"}
 ```
 ### Configuration
 
@@ -28,13 +28,26 @@ config :cached_contentful,
 
 ### Usage
 
-To fetch the entries:
-
+Get all the entries:
 ``` Elixir
-CachedContentful.ContentfulRegistry.getEntries()
+CachedContentful.Api.getEntries
 ```
 
-To update the entries manually:
+Get all entries by type
 ``` Elixir
-CachedContentful.ContentfulRegistry.updateEntries()
+CachedContentful.Api.getEntriesByType("entrytype")
 ```
+
+Get entry by id
+``` Elixir
+CachedContentful.Api.getEntryById("s0m3l0n61D")
+```
+
+Update entries with fresh new data from the Contentful API:
+``` Elixir
+CachedContentful.Api.updateEntries()
+```
+
+### TODO
+
+The dependency only contains basic functionalities for entries. will add media, space and more complex searches later.

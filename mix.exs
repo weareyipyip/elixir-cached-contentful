@@ -16,7 +16,7 @@ defmodule CachedContentful.Mixfile do
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
     [mod: {CachedContentful, []},
-    extra_applications: [:logger]]
+    extra_applications: [:logger, :httpoison]]
   end
 
   # Dependencies can be Hex packages:
@@ -30,7 +30,7 @@ defmodule CachedContentful.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:contentful, "~> 0.1.0"}
+      {:httpoison, "~> 0.12"}
     ]
   end
 end
