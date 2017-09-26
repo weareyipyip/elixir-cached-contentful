@@ -18,5 +18,8 @@ defmodule CachedContentful do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: CachedContentful.Supervisor]
     Supervisor.start_link(children, opts)
+
+    CachedContentful.ResultSupervisor.start_link()
   end
+  
 end

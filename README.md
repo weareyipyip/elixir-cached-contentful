@@ -59,6 +59,49 @@ Update entries with fresh new data from the Contentful API:
 CachedContentful.Api.updateEntries
 ```
 
+#### Custom entry queries
+
+With custom queries you can fetch specific or filtered data and cache them.
+
+``` Elixir
+CachedContentful.Api.customEntrySearch(name, options, update)
+```
+
+#### Parameters
+**name (String)**
+The name of the cache to save the results in. This will make sure that one call is being made and saved into a process for instant retrieval.
+
+**options (Map, default = %{})**
+Here you can set the queries for the Contentful request in a form of a map. 
+For example:
+``` Elixir
+%{
+	"content_type": "blogPost",
+	"order": "sys.createdAt"
+}
+```
+
+**update (Boolean, default = false)**
+This is an optional paramter, but can be set to true if you want to update the results.
+
+You can find all the query options in the [Contentful Contet delivery API](https://www.contentful.com/developers/docs/references/content-delivery-api/) 
+
+**Example**
+``` Elixir
+# Fetching and saving data in the cache
+CachedContentful.Api.customEntrySearch(
+    "ordered_blogposts",
+    %{"content_type": "blogPost", "order": "sys.createdAt"}
+    )
+    
+# Update the current cache
+CachedContentful.Api.customEntrySearch(
+    "ordered_blogposts",
+    %{"content_type": "blogPost", "order": "-sys.createdAt"},
+    true
+    )
+```
+
 #### Assets
 
 Get all the assets:

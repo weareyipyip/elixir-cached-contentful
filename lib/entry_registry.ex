@@ -7,7 +7,6 @@ defmodule CachedContentful.EntryRegistry do
 	@auto_update Application.get_env(:cached_contentful, :auto_update, false)
 	@update_interval Application.get_env(:cached_contentful, :update_interval, 1 * 60 * 60 * 10000)
 
-
 	def start_link(name) do
 		GenServer.start_link(__MODULE__, :ok, name: name)
 	end

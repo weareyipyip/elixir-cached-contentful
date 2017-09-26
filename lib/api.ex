@@ -28,6 +28,30 @@ defmodule CachedContentful.Api do
 			|> List.first
 	end
 
+	def customEntrySearch(queryName, queryMap \\ %{}, update \\ false) do
+		case CachedContentful.CustomRegistry.get_results(queryName) do
+			[] -> 
+				fetchCustomData(queryName, queryMap)
+			results ->
+				if update do
+					fetchCustomData(queryName, queryMap)
+				else
+					results |> List.first()
+				end
+		end
+	end
+
+	defp fetchCustomData(queryName, queryMap) do
+		query = Enum.map(queryMap, fn({k, v}) -> 
+				"&#{k}=#{v}"
+			end)
+			|> List.to_string
+
+		results = CachedContentful.RequestHandler.custom_query(query)
+		CachedContentful.CustomRegistry.add_result(queryName, results)
+		results
+	end
+
 	# ASSETS
 	def getAssets do
 		GenServer.call(CachedContentful.AssetRegistry, :getAssets)

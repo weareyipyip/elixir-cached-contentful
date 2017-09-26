@@ -31,7 +31,8 @@ defmodule CachedContentful.Mixfile do
   defp deps do
     [
       {:poison, "~> 3.1"},
-      {:httpoison, "~> 0.12"}
+      {:httpoison, "~> 0.12"},
+      {:gproc, "~> 0.6.1"}
     ]
   end
 end

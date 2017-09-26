@@ -22,4 +22,13 @@ defmodule CachedContentful.RequestHandler do
 		end
 	end
 
+	def custom_query(query) do
+		url = "#{@base_url}/spaces/#{@space_id}/entries?access_token=#{@access_token}#{query}"
+		case HTTPoison.get!(url) do
+			%HTTPoison.Response{status_code: 200, body: body} ->
+				items = body |> Poison.decode!
+				items["items"]
+		end
+	end
+
 end
