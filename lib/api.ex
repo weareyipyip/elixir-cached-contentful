@@ -75,10 +75,10 @@ defmodule CachedContentful.Api do
 			%{ "#{k}" => v }
 		end)
 		%{
-			type: entry["sys"]["contentType"]["sys"]["id"],
-			id: entry["sys"]["id"],
-			created_at: entry["sys"]["createdAt"],
-			fields: fields
+			"type" => entry["sys"]["contentType"]["sys"]["id"],
+			"id" => entry["sys"]["id"],
+			"created_at" => entry["sys"]["createdAt"],
+			"fields" => fields
 		}
 	end
 
