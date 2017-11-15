@@ -17,7 +17,7 @@ Cheers and enjoy!
 
 Add cached_contentful to your dependency list
 ``` Elixir
-{:cached_contentful, git: "https://github.com/weareyipyip/elixir-cached-contentful.git"}
+{:cached_contentful, git: "https://github.com/weareyipyip/elixir-cached-contentful.git", tag: "0.3.0"}
 ```
 ### Configuration
 
@@ -26,12 +26,14 @@ Do some configuration
 config :cached_contentful,
     space_id: "YOUR_SPACE_ID",
     access_token: "YOUR_ACCESS_TOKEN",
+    default_language: "en-US",
     auto_update: false,
     update_interval: 24 * 60 * 60 * 1000 # Refresh every 24 hours (milliseconds)
 ```
 
 * `spaceid` = Is the contentful space id that you want to use (REQUIRED)
 * `access_token` = Token that matches the space (REQUIRED)
+* `default_language` = Default Space language (REQUIRED)
 * `auto_update` = Set if you want the entries to be automatically updated via the worker.
 * `update_interval` = Interval for updating the entries (OPTIONAL)
 
@@ -39,19 +41,27 @@ config :cached_contentful,
 
 #### Entries
 
-Get all the entries:
+Get all the entries
+params: 
+* lanuage
 ``` Elixir
-CachedContentful.Api.getEntries
+CachedContentful.Api.getEntries("en-US")
 ```
 
 Get all entries by type
+params: 
+* Entry Type
+* lanuage
 ``` Elixir
-CachedContentful.Api.getEntriesByType("entrytype")
+CachedContentful.Api.getEntriesByType("entrytype", "nl")
 ```
 
 Get entry by id
+params: 
+* Entry Type
+* lanuage
 ``` Elixir
-CachedContentful.Api.getEntryById("s0m3l0n61D")
+CachedContentful.Api.getEntryById("s0m3l0n61D", "en-US")
 ```
 
 Update entries with fresh new data from the Contentful API:
@@ -64,7 +74,7 @@ CachedContentful.Api.updateEntries
 With custom queries you can fetch specific or filtered data and cache them.
 
 ``` Elixir
-CachedContentful.Api.customEntrySearch(name, options, update)
+CachedContentful.Api.customEntrySearch(name, options, update, language)
 ```
 
 #### Parameters
@@ -83,6 +93,9 @@ For example:
 
 **update (Boolean, default = false)**
 This is an optional paramter, but can be set to true if you want to update the results.
+
+**language**
+Provide the language you want to content in.
 
 You can find all the query options in the [Contentful Contet delivery API](https://www.contentful.com/developers/docs/references/content-delivery-api/) 
 

@@ -2,46 +2,59 @@ defmodule CachedContentful.Api do
 
 	alias CachedContentful.RequestHandler
 
+	@default_language Application.get_env(:cached_contentful, :default_language)
+
 	# ENTRIES
-	def getEntries do
+	def getEntries(locale) do
 		GenServer.call(CachedContentful.EntryRegistry, :getEntries)
+			|> Enum.map(fn(entry) ->				
+				format_entry(entry, locale)
+			end)
 	end
 
-	def getEntriesByType(type) do
+	def getEntriesByType(type, locale) do
 		GenServer.call(CachedContentful.EntryRegistry, :getEntries)
 			|> Enum.map(fn(entry) ->
 			if entry["sys"]["contentType"]["sys"]["id"] == type do
-				entry
+				format_entry(entry, locale)
 			end
 		end)
 			|> Enum.filter(fn(entry) -> entry != nil end)
 	end
 
-	def getEntryById(id) do
+	def getEntryById(id, locale) do
 		GenServer.call(CachedContentful.EntryRegistry, :getEntries)
 			|> Enum.map(fn(entry) ->
 			if entry["sys"]["id"] == id do
-				entry
+				format_entry(entry, locale)
 			end
 		end)
 			|> Enum.filter(fn(entry) -> entry != nil end)
 			|> List.first
 	end
 
-	def customEntrySearch(queryName, queryMap \\ %{}, update \\ false) do
+	def customEntrySearch(queryName, queryMap \\ %{}, update \\ false, locale) do
 		case CachedContentful.CustomRegistry.get_results(queryName) do
 			[] -> 
-				fetchCustomData(queryName, queryMap)
+				fetchCustomData(queryName, queryMap, locale)
 			results ->
 				if update do
-					fetchCustomData(queryName, queryMap)
+					fetchCustomData(queryName, queryMap, locale)
+						|> Enum.map(fn(entry) ->				
+							format_entry(entry, locale)
+						end)
 				else
-					results |> List.first()
+					results 
+						|> List.first()
+						|> Enum.map(fn(entry) ->				
+							format_entry(entry, locale)
+						end) 
+						
 				end
 		end
 	end
 
-	defp fetchCustomData(queryName, queryMap) do
+	defp fetchCustomData(queryName, queryMap, locale) do
 		query = Enum.map(queryMap, fn({k, v}) -> 
 				"&#{k}=#{v}"
 			end)
@@ -50,6 +63,23 @@ defmodule CachedContentful.Api do
 		results = CachedContentful.RequestHandler.custom_query(query)
 		CachedContentful.CustomRegistry.add_result(queryName, results)
 		results
+	end
+
+	defp format_entry(entry, locale) do
+		fields = Enum.map(entry["fields"], fn({k, v}) -> 
+			v = if Map.has_key?(v, locale) do
+				v[locale]
+			else
+				v[@default_language]
+			end
+			%{ "#{k}" => v }
+		end)
+		%{
+			type: entry["sys"]["contentType"]["sys"]["id"],
+			id: entry["sys"]["id"],
+			created_at: entry["sys"]["createdAt"],
+			fields: fields
+		}
 	end
 
 	# ASSETS
@@ -67,8 +97,6 @@ defmodule CachedContentful.Api do
 			|> Enum.filter(fn(asset) -> asset != nil end)
 			|> List.first
 	end
-
-
 
 	# UPDATERS
 	def updateEntries do
