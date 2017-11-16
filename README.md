@@ -17,7 +17,7 @@ Cheers and enjoy!
 
 Add cached_contentful to your dependency list
 ``` Elixir
-{:cached_contentful, git: "https://github.com/weareyipyip/elixir-cached-contentful.git", tag: "0.3.1"}
+{:cached_contentful, git: "https://github.com/weareyipyip/elixir-cached-contentful.git", tag: "0.3.2"}
 ```
 ### Configuration
 
