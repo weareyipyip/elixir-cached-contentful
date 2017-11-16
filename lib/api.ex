@@ -36,16 +36,19 @@ defmodule CachedContentful.Api do
 	def customEntrySearch(queryName, queryMap \\ %{}, update \\ false, locale) do
 		case CachedContentful.CustomRegistry.get_results(queryName) do
 			[] -> 
-				fetchCustomData(queryName, queryMap, locale)
+				fetchCustomData(queryName, queryMap)
+					|> Enum.map(fn(entry) ->				
+						format_entry(entry, locale)
+					end)
 			results ->
 				if update do
-					fetchCustomData(queryName, queryMap, locale)
+					fetchCustomData(queryName, queryMap)
 						|> Enum.map(fn(entry) ->				
 							format_entry(entry, locale)
 						end)
 				else
-					results 
-						|> List.first()
+					results
+						|> List.first
 						|> Enum.map(fn(entry) ->				
 							format_entry(entry, locale)
 						end) 
@@ -54,7 +57,7 @@ defmodule CachedContentful.Api do
 		end
 	end
 
-	defp fetchCustomData(queryName, queryMap, locale) do
+	defp fetchCustomData(queryName, queryMap) do
 		query = Enum.map(queryMap, fn({k, v}) -> 
 				"&#{k}=#{v}"
 			end)
