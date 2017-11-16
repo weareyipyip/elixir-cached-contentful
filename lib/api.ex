@@ -77,6 +77,9 @@ defmodule CachedContentful.Api do
 			end
 			%{ "#{k}" => v }
 		end)
+			|> Enum.reduce(fn(a, b) -> 
+				Map.merge(a, b)
+			end)
 		%{
 			"type" => entry["sys"]["contentType"]["sys"]["id"],
 			"id" => entry["sys"]["id"],
