@@ -80,8 +80,6 @@ defmodule CachedContentful.Api do
 			|> Enum.reduce(fn(a, b) -> 
 				Map.merge(a, b)
 			end)
-
-		IO.inspect entry
 		%{
 			"type" => entry["sys"]["contentType"]["sys"]["id"],
 			"id" => entry["sys"]["id"],
