@@ -5,7 +5,7 @@ defmodule CachedContentful.RequestHandler do
 	@base_url "https://cdn.contentful.com"
 
 	def get_all_entries() do
-		url = "#{@base_url}/spaces/#{@space_id}/entries?access_token=#{@access_token}&locale=*"
+		url = "#{@base_url}/spaces/#{@space_id}/entries?access_token=#{@access_token}&locale=*&limit=900"
 		case HTTPoison.get!(url) do
 			%HTTPoison.Response{status_code: 200, body: body} ->
 				items = body |> Poison.decode!
@@ -14,7 +14,7 @@ defmodule CachedContentful.RequestHandler do
 	end
 
 	def get_all_assets() do
-		url = "#{@base_url}/spaces/#{@space_id}/assets?access_token=#{@access_token}"
+		url = "#{@base_url}/spaces/#{@space_id}/assets?access_token=#{@access_token}&limit=900"
 		case HTTPoison.get!(url) do
 			%HTTPoison.Response{status_code: 200, body: body} ->
 				items = body |> Poison.decode!
@@ -23,7 +23,7 @@ defmodule CachedContentful.RequestHandler do
 	end
 
 	def custom_query(query) do
-		url = "#{@base_url}/spaces/#{@space_id}/entries?access_token=#{@access_token}&locale=*#{query}"
+		url = "#{@base_url}/spaces/#{@space_id}/entries?access_token=#{@access_token}&locale=*#{query}&limit=900"
 		case HTTPoison.get!(url) do
 			%HTTPoison.Response{status_code: 200, body: body} ->
 				items = body |> Poison.decode!
