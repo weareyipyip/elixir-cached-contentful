@@ -33,7 +33,6 @@ defmodule CachedContentful.RequestHandler do
 				items["items"]
 			%HTTPoison.Response{status_code: 401, body: body} ->
 				errors = body |> Poison.decode!
-				IO.inspect errors
 				{:error, errors}
 		end
 	end
