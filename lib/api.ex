@@ -2,7 +2,7 @@ defmodule CachedContentful.Api do
 
 	alias CachedContentful.RequestHandler
 
-	@default_language Application.get_env(:cached_contentful, :default_language)
+	defp get_env_default_language(), do: Application.get_env(:cached_contentful, :default_language)
 
 	# ENTRIES
 	def getEntries(locale) do
@@ -73,11 +73,11 @@ defmodule CachedContentful.Api do
 			v = if Map.has_key?(v, locale) do
 				v[locale]
 			else
-				v[@default_language]
+				v[get_env_default_language()]
 			end
 			%{ "#{k}" => v }
 		end)
-			|> Enum.reduce(fn(a, b) -> 
+			|> Enum.reduce(%{}, fn(a, b) -> 
 				Map.merge(a, b)
 			end)
 		%{
