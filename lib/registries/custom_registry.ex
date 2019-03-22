@@ -11,7 +11,6 @@ defmodule CachedContentful.CustomRegistry do
 	end
 
 	# API
-
 	def add_result(result_name, result) do
 		GenServer.cast(via_tuple(result_name), {:add_result, result})
 	end
@@ -31,7 +30,7 @@ defmodule CachedContentful.CustomRegistry do
 		{:ok, results}
 	end
 
-	def handle_cast({:add_result, new_result}, results) do
+	def handle_cast({:add_result, new_result}, _results) do
 		{:noreply, [new_result]}
 	end
 

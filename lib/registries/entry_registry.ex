@@ -4,22 +4,22 @@ defmodule CachedContentful.EntryRegistry do
 
 	alias CachedContentful.RequestHandler
 
-	@auto_update Application.get_env(:cached_contentful, :auto_update, false)
-	@update_interval Application.get_env(:cached_contentful, :update_interval, 1 * 60 * 60 * 10000)
+	defp get_env_auto_update(), do: Application.get_env(:cached_contentful, :auto_update, false)
+	defp get_env_update_interval(), do: Application.get_env(:cached_contentful, :update_interval, 1 * 60 * 60 * 10000)
 
 	def start_link(name) do
 		GenServer.start_link(__MODULE__, :ok, name: name)
 	end
 
 	def init(:ok) do
-		if @auto_update, do: schedule_work()
+		if get_env_auto_update(), do: schedule_work()
 		entryData = RequestHandler.get_all_entries()
 		{:ok, entryData}
 	end
 
 	# Auto updater
 	defp schedule_work do
-		Process.send_after(self(), :work, @update_interval)
+		Process.send_after(self(), :work, get_env_update_interval())
 	end
 
 	def handle_info(:work, state) do 
