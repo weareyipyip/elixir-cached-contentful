@@ -4,7 +4,7 @@ defmodule CachedContentful.Mixfile do
   def project do
     [
       app: :cached_contentful,
-      version: "0.3.4",
+      version: "0.4.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps()
