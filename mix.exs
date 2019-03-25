@@ -4,7 +4,7 @@ defmodule CachedContentful.Mixfile do
   def project do
     [
       app: :cached_contentful,
-      version: "0.4.0",
+      version: "0.4.1",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps()
@@ -14,6 +14,7 @@ defmodule CachedContentful.Mixfile do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {CachedContentful.Application, []},
       extra_applications: [:logger, :httpoison]
     ]
   end
