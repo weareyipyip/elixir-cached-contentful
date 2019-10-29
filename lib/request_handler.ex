@@ -11,7 +11,6 @@ defmodule CachedContentful.RequestHandler do
 		access_token = get_env_access_token()
 		environment = get_env_contentful_env()
 		url = "#{@base_url}/spaces/#{space_id}/environments/#{environment}/entries?access_token=#{access_token}&locale=*&limit=900"
-		IO.inspect url
 		process_request(url)
 	end
 
