@@ -26,6 +26,7 @@ Do some configuration
 config :cached_contentful,
     space_id: "YOUR_SPACE_ID",
     access_token: "YOUR_ACCESS_TOKEN",
+    environment: "YOUR_ENVIRONMENT",
     default_language: "en-US",
     auto_update: false,
     update_interval: 24 * 60 * 60 * 1000 # Refresh every 24 hours (milliseconds)
@@ -34,6 +35,7 @@ config :cached_contentful,
 * `spaceid` = Is the contentful space id that you want to use (REQUIRED)
 * `access_token` = Token that matches the space (REQUIRED)
 * `default_language` = Default Space language (REQUIRED)
+* `environment` = The space environment you want to use (REQUIRED)
 * `auto_update` = Set if you want the entries to be automatically updated via the worker.
 * `update_interval` = Interval for updating the entries (OPTIONAL)
 
