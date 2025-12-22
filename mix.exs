@@ -22,9 +22,9 @@ defmodule CachedContentful.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:poison, "~> 3.1"},
-      {:httpoison, "~> 1.0"},
-      {:gproc, "~> 0.6.1"}
+      {:poison, "~> 6.0"},
+      {:httpoison, "~> 2.3"},
+      {:gproc, "~> 1.0.0"}
     ]
   end
 end
