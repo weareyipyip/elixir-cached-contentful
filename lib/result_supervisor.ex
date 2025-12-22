@@ -1,21 +1,15 @@
 defmodule CachedContentful.ResultSupervisor do
-	
-	use Supervisor
+  use DynamicSupervisor
 
-	def start_link do
-		Supervisor.start_link(__MODULE__, [], name: :result_supervisor)
-	end
+  def start_link(init_arg) do
+    DynamicSupervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  end
 
-	def start_room(name) do
-		Supervisor.start_child(:result_supervisor, [name])
-	end
+  def start_room(name) do
+    DynamicSupervisor.start_child(__MODULE__, {CachedContentful.CustomRegistry, name})
+  end
 
-	def init(_) do
-		children = [
-			worker(CachedContentful.CustomRegistry, [])
-		]
-
-		supervise(children, strategy: :simple_one_for_one)
-	end
-
+  def init(_) do
+    DynamicSupervisor.init(strategy: :one_for_one)
+  end
 end
